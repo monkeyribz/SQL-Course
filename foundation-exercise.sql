@@ -14,6 +14,7 @@ SELECT
 	, DATEDIFF(DAY,PS.AdmittedDate, PS.DischargeDate) AS LengthOfStay
 	, ps.Hospital
 	, ps.Ward
+	, ps.Tariff
 FROM
 	PatientStay ps
 WHERE ps.Hospital IN ('kingston', 'pruh')
@@ -21,6 +22,34 @@ WHERE ps.Hospital IN ('kingston', 'pruh')
 	AND ps.AdmittedDate BETWEEN '2024-02-27'and '2024-03-01'
 ORDER BY ps.AdmittedDate ASC,ps.DischargeDate ASC
 
+SELECT TOP 5
+	ps.Hospital
+	, ps.Ward
+	, COUNT(*) AS NumberOfPatients
+	, SUM(ps.Tariff) AS TotalTariff
+	, AVG(Tariff) AS AvgTariff
+FROM
+	PatientStay ps
+GROUP BY 
+	ps.Hospital
+	,ps.Ward
+ORDER BY
+	TotalTariff DESC
+
+Select *
+FROM DimHospitalBad
+
+SELECT
+	PS.PatientId
+	, PS.AdmittedDate
+	, H.HospitalType
+	, H.Reach
+	, H.HospitalSize
+	, H.Hospital
+	, ps.hospital
+FROM
+	PatientStay PS LEFT JOIN DimHospitalBad H ON PS.Hospital = H.Hospital
+	
 
 /*
 1. Filter the list the patients to show only those  -
