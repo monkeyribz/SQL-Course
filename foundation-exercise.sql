@@ -6,9 +6,21 @@ This lists 44 patients admitted to London hospitals over 5 days between Feb 26th
 */
 
 SELECT
-	*
+	ps.PatientID
+	, ps.AdmittedDate
+	, ps.DischargeDate
+	, DATEADD(WEEK,-2, ps.AdmittedDate) AS ReminderDate
+	, DATEADD(MONTH, 3,ps.DischargeDate) AS AppointmentDate
+	, DATEDIFF(DAY,PS.AdmittedDate, PS.DischargeDate) AS LengthOfStay
+	, ps.Hospital
+	, ps.Ward
 FROM
-	PatientStay ps ;
+	PatientStay ps
+WHERE ps.Hospital IN ('kingston', 'pruh')
+	AND ps.Ward LIKE '%Surgery'
+	AND ps.AdmittedDate BETWEEN '2024-02-27'and '2024-03-01'
+ORDER BY ps.AdmittedDate ASC,ps.DischargeDate ASC
+
 
 /*
 1. Filter the list the patients to show only those  -
